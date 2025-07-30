@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import dotenv from "dotenv";
 import { initDB } from "./config/db.js";
 import rateLimiter from "./middleware/rateLimiter.js";
@@ -10,10 +11,17 @@ dotenv.config();
 
 const app = express();
 
+// CORS configuration - Cho phép tất cả origins để test
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
 if (process.env.NODE_ENV === "production") job.start();
 
 // middleware
-app.use(rateLimiter);
+// app.use(rateLimiter); // Tạm thời comment out rate limiter
 app.use(express.json());
 
 // our custom simple middleware
